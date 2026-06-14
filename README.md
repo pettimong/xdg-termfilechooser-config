@@ -74,6 +74,8 @@ systemctl --user restart xdg-desktop-portal-termfilechooser
 
 - `config.example` uses `$HOME` in the `cmd=` path. Whether `$HOME` is expanded depends on the version of termfilechooser. If it does not work, replace `$HOME` with your absolute home path (e.g. `/home/username`). See `setup.md` for details.
 - skim (`sk`) is installed via cargo by default (`~/.cargo/bin/sk`). The wrappers add `~/.cargo/bin` to `$PATH` automatically, so no manual PATH configuration is needed.
+- File upload on Gemini may fail when Zen Browser is the only window on a workspace.
+  Suspected Wayland XDG Activation Token issue. See `setup.md` for details.
 
 ---
 

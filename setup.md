@@ -152,6 +152,19 @@ It must be `[filechooser]`, not `[cmd]`.
 
 `graphical-session.target` is inactive. Follow step 4 above (create hyprland-session.target).
 
+### File upload fails on Gemini (single window workspace)
+
+**Symptom**: kitty opens and file selection works, but the file is not uploaded to Gemini.
+The portal file is correctly written with the selected path, but Gemini ignores the result.
+This only happens when Zen Browser is the sole window on the workspace.
+Claude.ai and other sites are not affected.
+
+**Cause**: Suspected Wayland XDG Activation Token issue. When Zen Browser is the only window
+on a workspace, the token handoff between the browser and the portal may fail silently.
+The portal log shows no errors — the failure occurs before the portal is even called.
+
+**Workaround**: Keep at least one other window on the same workspace as Zen Browser.
+
 ---
 ---
 
