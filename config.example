@@ -1,0 +1,11 @@
+[filechooser]
+# sk (skim) を使う場合:
+cmd=$HOME/.config/xdg-desktop-portal-termfilechooser/sk-wrapper.sh
+
+#-----------------------------------------
+# yazi を使う場合は上をコメントアウトして下を有効化:
+# 編集後サービスを開始する:
+# $ systemctl --user restart xdg-desktop-portal-termfilechooser
+#-----------------------------------------
+
+# cmd=$HOME/.config/xdg-desktop-portal-termfilechooser/yazi-wrapper.sh
