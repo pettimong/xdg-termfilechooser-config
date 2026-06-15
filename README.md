@@ -74,8 +74,8 @@ systemctl --user restart xdg-desktop-portal-termfilechooser
 
 - `config.example` uses `$HOME` in the `cmd=` path. Whether `$HOME` is expanded depends on the version of termfilechooser. If it does not work, replace `$HOME` with your absolute home path (e.g. `/home/username`). See `setup.md` for details.
 - skim (`sk`) is installed via cargo by default (`~/.cargo/bin/sk`). The wrappers add `~/.cargo/bin` to `$PATH` automatically, so no manual PATH configuration is needed.
-- File upload on Gemini may fail when Zen Browser is the only window on a workspace.
-  Suspected Wayland XDG Activation Token issue. See `setup.md` for details.
+- Multiple file selection is not working with either wrapper (Tab key for sk-wrapper, Space key for yazi-wrapper). Under investigation.
+- File upload on Gemini may fail depending on the browser window layout or workspace configuration. The portal itself works correctly — the issue appears to be in how Gemini's UI handles the portal response in certain rendering contexts. Under investigation. See `setup.md` for details and workarounds.
 
 ---
 
@@ -85,7 +85,6 @@ systemctl --user restart xdg-desktop-portal-termfilechooser
 |---|---|---|
 | Style | Fuzzy finder | TUI file manager |
 | Best for | Fast search by filename | Visual directory browsing |
-| Multiple select | Tab key | Space key |
 | Feel | CLI-native | Close to GUI file manager |
 
 ---
@@ -173,6 +172,8 @@ systemctl --user restart xdg-desktop-portal-termfilechooser
 
 - `config.example` の `cmd=` に `$HOME` を使っていますが、termfilechooser のバージョンによっては展開されない場合があります。動作しない場合は絶対パス（例: `/home/username`）に書き換えてください。詳細は `setup.md` を参照してください。
 - skim (`sk`) はデフォルトで cargo 経由でインストールされます（`~/.cargo/bin/sk`）。ラッパースクリプトが自動的に `~/.cargo/bin` を `$PATH` に追加するので、手動設定は不要です。
+- どちらのラッパーでも複数ファイル選択が動作しません（sk-wrapper: Tabキー、yazi-wrapper: Spaceキー）。現在調査中です。
+- Gemini へのファイルアップロードは、ブラウザのウィンドウレイアウトやワークスペースの構成によって失敗する場合があります。ポータル自体は正常に動作しており、Gemini の UI が特定の描画コンテキストでポータルのレスポンスを正しく処理できていないことが原因と考えられます。現在調査中です。詳細と回避策は `setup.md` を参照してください。
 
 ---
 
@@ -182,7 +183,6 @@ systemctl --user restart xdg-desktop-portal-termfilechooser
 |---|---|---|
 | スタイル | fuzzy finder | TUIファイルマネージャー |
 | 得意なこと | ファイル名での高速検索 | ディレクトリの視覚的なブラウジング |
-| 複数選択 | Tab キー | Space キー |
 | 操作感 | CLIネイティブ | GUIファイルマネージャーに近い |
 
 ---
@@ -190,4 +190,3 @@ systemctl --user restart xdg-desktop-portal-termfilechooser
 ## ライセンス
 
 MIT
-# xdg-termfilechooser-config

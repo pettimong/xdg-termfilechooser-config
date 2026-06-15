@@ -152,18 +152,32 @@ It must be `[filechooser]`, not `[cmd]`.
 
 `graphical-session.target` is inactive. Follow step 4 above (create hyprland-session.target).
 
-### File upload fails on Gemini (single window workspace)
+### File upload fails on Gemini
 
 **Symptom**: kitty opens and file selection works, but the file is not uploaded to Gemini.
 The portal file is correctly written with the selected path, but Gemini ignores the result.
-This only happens when Zen Browser is the sole window on the workspace.
-Claude.ai and other sites are not affected.
+Claude.ai, GitHub, and other sites are not affected.
 
-**Cause**: Suspected Wayland XDG Activation Token issue. When Zen Browser is the only window
-on a workspace, the token handoff between the browser and the portal may fail silently.
-The portal log shows no errors — the failure occurs before the portal is even called.
+**Findings so far**:
+- Failure occurs before the portal is called — no errors appear in the portal log
+- Reproducible when Zen Browser is the sole window on the workspace; adding any other
+  window to the same workspace resolves it
+- Gemini's UI layout appears to affect the behavior: the compact bottom-sheet input
+  (narrow window) uploads successfully, while the centered floating input (wide window)
+  does not — suggesting the issue is tied to a specific UI component in Gemini
 
-**Workaround**: Keep at least one other window on the same workspace as Zen Browser.
+**Suspected cause**: Gemini's JavaScript-heavy file upload UI component fails to properly
+hand off the xdg-portal response in certain rendering contexts. This may interact with
+Wayland activation token handling, but the root cause is still under investigation.
+
+**Workaround**: Keep at least one other window on the same workspace as Zen Browser,
+or narrow the Zen Browser window until the bottom-sheet input layout appears.
+
+### Multiple file selection does not work
+
+**Symptom**: Pressing Tab (sk-wrapper) or Space (yazi-wrapper) does not select multiple files.
+
+**Status**: Under investigation. Affects both wrappers.
 
 ---
 ---
