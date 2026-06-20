@@ -2,6 +2,9 @@
 
 Tested on: **Arch Linux / Hyprland / Wayland / Zen Browser**
 
+> **Note**: These wrappers require the [hunkyburrito fork](https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser).
+> The GermainZ fork (now archived) uses a different argument spec and will not work correctly.
+
 ---
 
 ## Prerequisites
@@ -75,11 +78,11 @@ and fall back to the default `ranger-wrapper.sh`.
 
 ```ini
 [filechooser]
-cmd=$HOME/.config/xdg-desktop-portal-termfilechooser/sk-wrapper.sh
+cmd=/home/YOUR_USERNAME/.config/xdg-desktop-portal-termfilechooser/sk-wrapper.sh
 ```
 
-> **Note**: Whether `$HOME` is expanded in `cmd=` depends on the termfilechooser version.
-> If it does not work, use the absolute path (e.g. `/home/username/.config/...`).
+> **Note**: Use an absolute path for `cmd=`. `$HOME` may not be expanded depending
+> on the termfilechooser version.
 
 ### 6. skim PATH issue
 
@@ -173,18 +176,15 @@ Wayland activation token handling, but the root cause is still under investigati
 **Workaround**: Keep at least one other window on the same workspace as Zen Browser,
 or narrow the Zen Browser window until the bottom-sheet input layout appears.
 
-### Multiple file selection does not work
-
-**Symptom**: Pressing Tab (sk-wrapper) or Space (yazi-wrapper) does not select multiple files.
-
-**Status**: Under investigation. Affects both wrappers.
-
 ---
 ---
 
 # セットアップガイドとトラブルシューティング（日本語）
 
 動作確認環境: **Arch Linux / Hyprland / Wayland / Zen Browser**
+
+> **注意**: このラッパーは [hunkyburrito fork](https://github.com/boydaihungst/xdg-desktop-portal-termfilechooser) が必要です。
+> GermainZ fork（アーカイブ済み）とは引数仕様が異なるため動作しません。
 
 ---
 
@@ -259,11 +259,11 @@ exec-once = systemctl --user start hyprland-session.target
 
 ```ini
 [filechooser]
-cmd=$HOME/.config/xdg-desktop-portal-termfilechooser/sk-wrapper.sh
+cmd=/home/YOUR_USERNAME/.config/xdg-desktop-portal-termfilechooser/sk-wrapper.sh
 ```
 
-> **注意**: `cmd=` 内の `$HOME` が展開されるかは termfilechooser のバージョン依存です。
-> 動作しない場合は絶対パス（例: `/home/username/.config/...`）に書き換えてください。
+> **注意**: `cmd=` には絶対パスを使用してください。termfilechooser のバージョンによっては
+> `$HOME` が展開されない場合があります。
 
 ### 6. skim の PATH 問題
 
@@ -334,3 +334,18 @@ config のセクション名が間違っています。`[cmd]` ではなく `[fi
 ### xdg-desktop-portal が "Dependency failed" で起動しない
 
 `graphical-session.target` が inactive です。手順4（hyprland-session.target の作成）を実施してください。
+
+### Gemini へのファイルアップロードが失敗する
+
+**症状**: kitty が起動してファイル選択は完了するが、Gemini にアップロードされない。
+ポータルファイルには選択したパスが正しく書き込まれているが、Gemini が結果を無視する。
+Claude.ai・GitHub 等では発生しない。
+
+**判明していること**:
+- ポータルが呼ばれる前に失敗している（ポータルログにエラーなし）
+- Zen Browser がワークスペース上の唯一のウィンドウのときに再現する。他のウィンドウを同じワークスペースに追加すると解消する
+- Gemini の UI レイアウトが影響する: 画面下部のシート型入力（ウィンドウが狭い場合）では成功し、中央フロート型入力（ウィンドウが広い場合）では失敗する
+
+**推定原因**: Gemini の JavaScript 製ファイルアップロード UI が特定のレンダリングコンテキストで xdg-portal のレスポンスを正しく受け取れない。Wayland のアクティベーショントークン処理との相互作用の可能性があるが、根本原因は調査中。
+
+**回避策**: Zen Browser と同じワークスペースに他のウィンドウを1つ以上置く。またはZen Browser のウィンドウを狭めてボトムシート型レイアウトを出す。
